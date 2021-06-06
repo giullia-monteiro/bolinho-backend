@@ -10,9 +10,11 @@
   "author": "giulia",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1",
+    "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
     "config": "^3.3.6",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
     "pg": "^8.5.1"
   }
 }
