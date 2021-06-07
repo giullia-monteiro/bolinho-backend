@@ -273,18 +273,12 @@ app.route('/pedidos')
             return res.status(404).send("Pedido não encontrado!")
         }
 
-        
-        const status = 
-            (req.body.status !== undefined && req.body.status === 0) 
-                ? req.body.status 
-                : dbResponse.rows[0].status 
-
         const pedidoUpdate = {
             clienteId:  req.body.clienteId  || dbResponse.rows[0].clienteid,
             sabor:      req.body.sabor      || dbResponse.rows[0].sabor,
             quantidade: req.body.quantidade || dbResponse.rows[0].quantidade,
             tamanho:    req.body.tamanho    || dbResponse.rows[0].tamanho,
-            status:     status   
+            status:     (req.body.status === undefined) ? dbResponse.rows[0].status : req.body.status
         }
 
         const query = `UPDATE pedidos 
