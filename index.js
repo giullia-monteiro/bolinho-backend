@@ -203,12 +203,11 @@ app.get('/clientes/:id/pedidos', verifyJWT, (req, res) => {
     const query = `SELECT * FROM pedidos WHERE clienteId=${req.params.id}`
     
     pool.query(query, (err, dbResponse) => { 
-
         if (err) {
             return res.status(500).send(err)
         }
         else if (dbResponse.rows.length <= 0){
-            return res.status(404).send("Cliente não encontrado!")
+            return res.status(404).send("Cliente não possui pedidos!")
         }
             
         res.status(200).send(dbResponse.rows)
@@ -275,7 +274,7 @@ app.route('/pedidos')
         }
 
         const pedidoUpdate = {
-            clienteId:  req.body.clienteId  || dbResponse.rows[0].clienteId,
+            clienteId:  req.body.clienteId  || dbResponse.rows[0].clienteid,
             sabor:      req.body.sabor      || dbResponse.rows[0].sabor,
             quantidade: req.body.quantidade || dbResponse.rows[0].quantidade,
             tamanho:    req.body.tamanho    || dbResponse.rows[0].tamanho,
@@ -294,6 +293,7 @@ app.route('/pedidos')
         pool.query(query, (err, updateResponse) => { 
 
             if (err) {
+                console.log(err)
                 return res.status(500).send(err)
             }
 
@@ -345,7 +345,7 @@ app.get('/pedidos/:id', verifyJWT, (req, res) => {
 //---------
 //---------
 
-app.route('/reset')
+app.route(verifyJWT, '/reset')
 .get((_, res) => {
 
     let query = `DROP TABLE IF EXISTS pedidos;`
